@@ -242,7 +242,7 @@ def detect_session_prefix(cookie: str) -> Optional[str]:
 
 
 def validate_cookie(cookie: str) -> Tuple[bool, str]:
-      """
+    """
     验证 Cookie 是否包含成对的会话字段（按 ; 拆分 key 精确校验，避免子串误判）。
 
     兼容 koa:sess/koa:sess.sig（旧版）与 gld:sess/gld:sess.sig（现网），

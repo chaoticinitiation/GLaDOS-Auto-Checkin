@@ -47,12 +47,18 @@
 3. 找到 `Application` → `Cookies` → `glados.cloud`
 4. 复制完整 Cookie 内容
 
-示例：
+示例（官网当前签发的是 `gld:` 前缀）：
 ```
-koa:sess=xxxxxx; koa:sess.sig=yyyyyy
+gld:sess=xxxxxx; gld:sess.sig=yyyyyy
 ```
 
-⚠️ **必须是完整的一整段**
+老版本签发的 `koa:sess=xxxxxx; koa:sess.sig=yyyyyy` 同样支持，两种前缀任选其一。
+
+⚠️ **必须是完整的一整段**，且 `sess` 与 `sess.sig` 两个字段**必须同时存在、前缀一致**。
+只复制其中一个会导致签到失败（脚本会明确指出缺少哪个字段）。
+
+> 💡 两种前缀无需手动转换。脚本会自动识别实际传入的键名，
+> **不要把 `gld:` 改成 `koa:`** —— 改前缀会让服务端无法识别 session，导致「没有权限」。
 
 ---
 

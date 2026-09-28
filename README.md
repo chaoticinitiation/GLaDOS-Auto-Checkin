@@ -66,12 +66,15 @@ gld:sess=xxxxxx; gld:sess.sig=yyyyyy
 
 进入你 Fork 后的仓库：
 
-1. **Settings** → **Secrets and variables** → **Actions**
+1. **Settings** → **Secrets and variables** → **Actions** → **Secrets** 标签页
 2. 点击 **New repository secret**
 3. 添加：
    - **Name**：`COOKIES`
    - **Value**：粘贴刚才复制的 Cookie
 4. 点击 **Save**
+
+**必须填在 Secrets，不是 Variables。** 填错位置脚本会读不到值，直接报
+`未检测到 COOKIES`。变量名必须是 `COOKIES`，不能有多余空格。
 
 ---
 
@@ -93,6 +96,7 @@ gld:sess=xxxxxx; gld:sess.sig=yyyyyy
 > 🔑 **钉钉 / 飞书加签说明**：若机器人启用了「加签」校验，则 `DINGTALK_WEBHOOK` + `DINGTALK_SECRET`（或 `FEISHU_WEBHOOK` + `FEISHU_SECRET`）**必须同时配置**。只配 webhook 不配 secret 时，脚本会发送无签名请求并给出告警，加签机器人将鉴权失败。
 
 ---
+
 
 ### 第五步：（可选）积分自动兑换
 
@@ -131,6 +135,30 @@ cookie_账号3
 ⚠️ Cookie 值本身不得包含 `|||`、`&` 或换行符，否则会被错误拆分。推荐使用 `|||` 作为分隔符，因为 Cookie 值中几乎不可能出现该字符串。
 
 ---
+
+## 💻 本地运行
+
+不依赖 GitHub Actions 也能直接跑：
+
+```bash
+pip install "requests==2.32.3"
+
+# Windows PowerShell
+$env:COOKIES="gld:sess=xxxxxx; gld:sess.sig=yyyyyy"
+python checkin.py
+
+# Linux / macOS
+export COOKIES="gld:sess=xxxxxx; gld:sess.sig=yyyyyy"
+python checkin.py
+```
+
+多账号用 `|||` 分隔：`cookie1 ||| cookie2`（`&` 或换行也可以）。
+
+退出码含义：`0` = 至少一个账号签到成功或今日已签到；
+`1` = 全部账号失败，或未配置 `COOKIES`（非零退出码便于在 CI 中及时发现问题）。
+
+---
+
 
 ## ⏰ 签到时间
 
